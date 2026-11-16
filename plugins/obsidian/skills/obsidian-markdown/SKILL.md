@@ -18,6 +18,12 @@ Create and edit valid Obsidian Flavored Markdown. Obsidian extends CommonMark an
 
 > When choosing between wikilinks and Markdown links: use `[[wikilinks]]` for notes within the vault (Obsidian tracks renames automatically) and `[text](url)` for external URLs only.
 
+## Citing public sources
+
+When the user explicitly asks you to find a public source for a note and gives no URL, use a web search MCP tool they have already configured and allowed. Search using only public terms from the request. Keep vault content and any search terms derived from it out of the query. If no search tool is available, ask for a source URL.
+
+Choose a direct HTTPS result from the official publisher, then use the `defuddle` skill to read the page. Once you verify the claim, cite the original page URL in a Markdown link or footnote. If you cannot find a source or verify the claim, tell the user.
+
 ## Internal Links (Wikilinks)
 
 ```markdown
