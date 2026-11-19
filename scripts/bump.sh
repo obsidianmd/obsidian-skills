@@ -14,6 +14,7 @@ files=(
   "plugins/obsidian/.cursor-plugin/plugin.json"
   "plugins/obsidian/gemini-extension.json"
   ".claude-plugin/marketplace.json"
+  "package.json"
 )
 
 current_version="$(sed -nE 's/^[[:space:]]*"version": "([0-9]+\.[0-9]+\.[0-9]+)".*/\1/p' "${files[0]}" | head -n 1)"
