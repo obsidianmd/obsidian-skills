@@ -56,6 +56,18 @@ npx skills add git@github.com:obsidianmd/obsidian-skills.git
 gemini extensions install https://github.com/obsidianmd/obsidian-skills
 ```
 
+### OpenCode 2 plugin
+
+With [OpenCode 2.3.2 or later](https://opencode.ai/docs/plugins), install all Obsidian skills as a plugin:
+
+```sh
+opencode plugin add github:obsidianmd/obsidian-skills
+```
+
+Mention `@obsidian-markdown` in a prompt to load that skill directly. The plugin installs the skills only, not the tools that some skills use (such as Obsidian CLI or Obsidian Headless).
+
+To remove the plugin, run `opencode plugin remove github:obsidianmd/obsidian-skills`.
+
 ### Manually
 
 #### Claude Code
