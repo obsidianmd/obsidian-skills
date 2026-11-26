@@ -43,6 +43,29 @@ ob sync-unlink --path ~/vaults/research              # disconnect and remove sto
 
 `--continuous` runs until stopped, so start it in the background or as a service.
 
+### Read the output, not the exit code
+
+`ob sync` can exit `0` in cases that are not success, so a script that trusts the exit code reports a healthy vault while nothing moves. Three shapes we hit running it unattended:
+
+- **"Fully synced" in the output is the signal.** Check that it is present rather than that the command returned.
+- **A vault that is not set up exits with a code, not a sync.** `ob sync --path <vault>` on a directory that has never been through `sync-setup` fails with *"No sync configuration found"*. If the script runs with a different `HOME` or `XDG_CONFIG_HOME` than the login used, `ob` looks in the wrong place and reports no configuration for a vault that is configured.
+- **A second concurrent run is not a failure.** When another `ob sync` already holds the vault, the second exits non-zero with *"Another sync instance is already running for this vault."* That is a deferral, not a broken sync: the first instance is doing the work. Only treat it as a fault if it repeats on every run, which means the other instance is hung.
+
+A minimal check that distinguishes the three:
+
+```bash
+out=$(ob sync --path "$VAULT" 2>&1); rc=$?
+if printf '%s' "$out" | grep -qi "another sync instance"; then
+  echo "deferred: another instance holds this vault"
+elif printf '%s' "$out" | grep -qi "no sync configuration"; then
+  echo "not configured on this machine — run ob sync-setup, and check HOME/XDG_CONFIG_HOME"
+elif [ "$rc" -eq 0 ] && printf '%s' "$out" | grep -qi "fully synced"; then
+  echo "synced"
+else
+  echo "did not verify (rc=$rc)"; printf '%s\n' "$out" | tail -5
+fi
+```
+
 `ob sync-create-remote --name "Research"` creates a remote vault. Add `--encryption e2ee` for end-to-end encryption or `--encryption standard` for managed encryption.
 
 ### Sync settings
